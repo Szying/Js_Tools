@@ -1,0 +1,112 @@
+檢核模組的寫法大致上同於一般模組，主要的差別有兩項： 
+
+1. Class的命名不同於一般模組 XX_A00100 ，而是前面八位數同主程式，後面再加上 _mod ，如 XXA0_0100_mod。 
+
+2. 檢核模組透過兩種方式來告知主程式檢核結果是否通過，若檢核通過通常會直接回傳boolean的true或著不做任何處理，若檢核失敗，則有可能傳回false或是直接將對應的Exception拋回主程式，至於採用何種方式請參照SPEC上的說明。 
+
+3. 檢核模組有時候會呼叫 RuleEngine 執行交易規則的檢核。有關交易規則的架構及說明，請參考 交易規則 一文。 
+
+
+以下為三個檢核模組的範例：
+檢核成功，不處理；檢核錯誤，拋出 Exception
+public class XXX0_0100_mod {
+
+    /**
+     * 檢查是否為輸入件
+     * @param op_status
+     * @throws ModuleException
+     */
+    public static void checkIsInput(String op_status) throws ErrorInputException{
+        if(!"10".equals(op_status)){
+                MessageUtil.ErrorInput("LBA0_0100_MOD_MSG_01"); //選取的資料有非輸入件，無法執行此按鈕
+        }
+    }
+}
+檢核成功，回傳 true ;檢核錯誤，拋出 Exception
+public class XXX0_0100_mod {
+
+    private static final String SQL_001 = "com.cathay.lf.m0.module.XXX0_0100_mod.SQL001";
+
+    /**
+      * 檢核更新日有無資料
+       * @param DATE_UPDATE
+      * @return boolean
+      * @throws ModuleException
+      * @throws DBException
+      */
+    public boolean checkData(Date DATE_UPDATE) throws ModuleException {
+
+        if (DATE_UPDATE == null) {
+                MessageUtil.ErrorInput("LFM0_0400_mod_ERR_MSG01", DATE_UPDATE); // 傳入參數DATE_UPDATE不可為空 : {0}
+        }
+
+        DataSet ds = Transaction.getDataSet();
+        ds.setField("DATE_UPDATE", DATE_UPDATE);
+        
+        try {
+
+                DBUtil.searchAndRetrieve(ds, SQL_001);
+        
+        } catch (DataNotFoundException dfne) {
+                // 查無資料
+                if (isDebug) {
+                        log.debug("dfne! return true.");
+                }
+                return true;
+        }
+
+        // 逐筆檢查OP_STATUS是否等於10
+        while (ds.next()) {
+
+                String opStatus = ObjectUtils.toString(ds.getField(0), null);
+
+                if (opStatus == null) {
+                        // 資料狀態不可為null，請檢查:{0}
+                        MessageUtil.ErrorInput("LFM0_0400_mod_ERR_MSG02", opStatus);
+                }
+
+                if (!"10".equals(opStatus)) {
+                        // 有資料尚未退回為待鎖件，不可退回，請檢查:{0}
+                        MessageUtil.ErrorInput("LFM0_0400_mod_ERR_MSG03", opStatus);
+                }
+        }
+
+        return true;
+    }
+    
+}
+使用 RuleEngine 來進行檢核。檢核成功，不處理；檢核失敗，拋出 Exception
+public class LIA0_0101_mod {
+
+        /** log */
+        private static Logger log = Logger.getLogger(LIA0_0101_mod.class);
+        
+        /**Log4j是否為Debug模式*/
+        private boolean isDebug = log.isDebugEnabled();
+        
+        public void checkConfirmByRule(DTLIA010 vo) throws Exception {
+                
+                //1.取得系統日期
+                RZ_G00100 theRZ_G00100 = new RZ_G00100();
+                String SYS_DATE = theRZ_G00100.getMchdSystemDate("LI");
+                
+                
+                //2.使用交易規則模組
+                RuleEngine re = RuleEngine.getInstance();    //取得RuleEngine實體
+                
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("SYS_DATE", SYS_DATE); //系統日期
+                map.put("PPL_ACP_DATEE", ObjectUtils.toString(vo.getPPL_ACP_DATEE()).trim()); //簽呈有效日期迄
+                
+                EodRuleInput ri = new EodRuleInput(map);    //建立交易規則傳入參數
+                
+                
+                //呼叫RuleEngine.evalue方法對交易規則群組LIA02進行檢核，若有錯會拋出Validation Exception
+                //LIA02(國內IRS投資建議書輸入檢核)群組包含以下兩個交易規則
+                // |- LIA002 = 簽呈有效期限迄日不得小於系統日
+                // |- LIA003 = 簽呈有效期限迄日是否尚未前台日結
+                
+                re.evaluate("LIA02", ri);    
+                
+        }
+}
