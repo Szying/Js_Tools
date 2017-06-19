@@ -1,0 +1,117 @@
+程式碼結構 - VO#
+
+VO 是 Value Object 的簡稱，在 J2EE 架構中扮演資料容器的角色，
+通常一個 VO 即可表達 DB 中的一個 record。
+
+
+VO範例說明Column_Annotion完整Sample與Map的差異產生VO
+
+EBAF 中傳遞資料時，會使用 VO 或 Map 包裝、傳遞資料
+
+VO中的變數會對應到 Table 中的欄位，型態也會直接對應，其他相關資訊會定義在變數的 Annotation 中，請參考「Column Annotation」頁籤
+
+VO 不需自行開發，已有工具可直接產生，請參考「產生VO」頁籤
+
+實作上，VO 必須符合 JavaBean 的下列特性：
+JavaBean 類別必須是一個 public 類別
+JavaBean 類別必須有一個預設、不帶參數的建構子
+JavaBean 類別中，所有變數都必須是 private 變數
+要存取 JavaBean 類別中的任一變數，必須透過該變數的 getter 和 setter；getter/setter 都是 public 的
+JavaBean 類別如需跨異質平台，或是達到串流的效果，則需實作 java.io.Serializable，並產生 SerialVersionUID，方便序列化
+
+須為 public 類別
+
+/**
+ * DTRED016
+ * <pre>
+ * Generated value object of DBRE.DTRED016 (基本資料OTHERCODE設定檔)
+ * </pre>
+ */
+public class DTRED016 implements Cloneable {
+    // some codes
+}
+
+
+須有一個不帶參數的預設建構子
+程式碼中沒有不帶參數的預設建構子，並不會影響程式的編譯和運行。但隨著系統的擴充，仍有機會使用到預設建構子，所以建議保留
+
+/**
+ * DTRED016
+ * <pre>
+ * Generated value object of DBRE.DTRED016 (基本資料OTHERCODE設定檔)
+ * </pre>
+ */
+public class DTRED016 implements Cloneable {
+    
+    /**
+    * Default constructor
+    */
+    public DTRED016(){
+        // do nothing   
+    }
+}
+
+
+所有變數都必須是 private 變數
+變數會對應到 Table 中的欄位，且型態也會對應
+其他欄位資訊（如 PK、預設值等）定義在變數的 Annotation 中，可參考「Column Annotation」頁籤
+
+/**
+ * DTRED016
+ * <pre>
+ * Generated value object of DBRE.DTRED016 (基本資料OTHERCODE設定檔)
+ * </pre>
+ */
+public class DTRED016 implements Cloneable {
+    
+    @Column(desc="股票版次代號", pk=true, nullAble=false, type=java.sql.Types.VARCHAR, length=20, defaultValue="") 
+    private String DTRED010_SNO = EmptyField.STRING;
+        
+    /**
+    * Default constructor
+    */
+    public DTRED016(){
+        // do nothing   
+    }
+}
+
+
+存取任一變數，必須透過該變數的 getter 和 setter
+
+/**
+ * DTRED016
+ * <pre>
+ * Generated value object of DBRE.DTRED016 (基本資料OTHERCODE設定檔)
+ * </pre>
+ */
+public class DTRED016 implements Cloneable {
+    
+    @Column(desc="股票版次代號", pk=true, nullAble=false, type=java.sql.Types.VARCHAR, length=20, defaultValue="") 
+    private String DTRED010_SNO = EmptyField.STRING;
+        
+    /**
+    * Default constructor
+    */
+    public DTRED016(){
+        // do nothing   
+    }
+    
+    /**
+    * get value of 股票版次代號
+    * @return 股票版次代號
+    */
+    public String getDTRED010_SNO() {
+        if(EmptyField.isEmpty(DTRED010_SNO)){
+            return null;
+        }
+        return DTRED010_SNO;
+    }
+
+    /**
+    * set value of 股票版次代號
+    * @param newDTRED010_SNO - 股票版次代號
+    */
+    public void setDTRED010_SNO(String newDTRED010_SNO){
+        DTRED010_SNO = newDTRED010_SNO;
+    }   
+}

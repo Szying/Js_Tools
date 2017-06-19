@@ -1,0 +1,84 @@
+程式碼結構-XML撰寫#
+
+在 EBAF 中，將使用者請求 TxBean 的方法及轉頁的設定從程式碼抽離成一個個單獨
+的 XML 設定檔，透過 HttpDispatcher 類別與此 XML 檔的配合，便可將請求轉發
+給 TxBean 的特定方法處理，處理完成後再根據 responseCode 轉發至特定頁面。
+
+
+XML範例:
+<?xml version="1.0"?>
+<txbean name="XXS0_0100" class="com.cathay.xx.s0.trx.XXS0_0100">
+        <action-list>
+            <action name="prompt" call-method="doPrompt">
+                <response-list>
+                        <response name="success" type="standard">
+                                <property name="url">/XX/S0/XXS0_0100/XXS00100.jsp</property>
+                        </response>
+                `</response-list>
+            </action>
+            <action name="query" call-method="doQuery">
+                <response-list>
+                        <response name="success" type="standard">
+                                <property name="url">/CM/js/ajax/dummy.jsp</property>
+                        </response>
+                </response-list>
+            </action>
+      </action-list>
+</txbean>
+注意事項 
+若無特殊需求，第一個 action name 一律為 "prompt" ，代表第一次進入此 TxBean 要執行的初始動作。
+<response name="success" type="standard"> 的 type 標準寫法便為 standard ，無需變動。
+當 JSP 對 server 送出 request 是透過 AJAX 時，由於不需導至任何畫面，但 EBAF 架構底層實際上仍會進行導頁，因此property 統一設為 /CM/js/ajax/dummy.jsp 。
+附註： dummy.jsp 為一空白的網頁。
+response name 的名稱與 TxBean 的 resp.setResponseCode( CODE ) 對應，因此可依需求將結果導至不同畫面。範例如下
+
+    //TxBean若這樣寫
+
+    /**
+     * 程式自定的初始動作，通常為取出 ResponseContext, UserObject, 
+     * 及設定 ReturnMessage 及 response code.
+     */
+    private void initApp(RequestContext req) throws TxException {
+
+        // 建立此 TxBean 通用的物件
+        resp = newResponseContext();
+        msg = new ReturnMessage();
+        userObj = getUserObject(req);
+        mXX_S00100 = new XX_S00100();
+
+        // 先將 ReturnMessage 的 reference 加到 response coontext
+        resp.addOutputData(IConstantMap.ErrMsg, msg);
+
+        // 在 Cathay 通常只有一個 page 在前面 display，所以可以先設定
+        resp.setResponseCode("success");
+    }
+    //------------------------------------------------------------------------------
+    /**
+    * 初始
+    */
+    public ResponseContext doPrompt(RequestContext req){
+
+        try {
+
+                resp.addOutputData("companyList", mXX_S00100.getCompanyList());
+
+        } catch (Exception e) {
+                log.error("", e);
+                MessageUtil.setErrorMsg(msg, "XXS0_0100_ERR_MSG01"); //初始失敗
+                resp.setResponseCode("error");
+        }
+
+        return resp;
+    }
+
+
+    //XML的對應response-list便可設為
+    <response-list>
+        <response name="success" type="standard">
+                <property name="url">/XX/S0/XXS0_0100/XXS00100.jsp</property>
+        </response>
+        <response name="error" type="standard">
+                <property name="url">/CM/error.jsp</property>
+        </response>
+    </response-list>
+    

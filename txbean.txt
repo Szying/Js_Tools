@@ -1,0 +1,311 @@
+程式碼結構-TxBean#
+
+TxBean，又稱為主程式， MVC 中角色為 Controller ，類似於 Java EE 的 Servlet ，
+透過適當合成 （compose） 不同的模組 （module） 滿足流程所需功能，與 xml 進行搭配
+將資料回傳至 JSP 進行顯示，通常一個 TxBean 便代表了一個流程或一組功能，如：股票下單。
+
+
+TxBean寫作約略可分成以下區塊
+1. 套件及匯入區塊
+2. SPEC 註解區塊
+3. CLASS 主體
+3.1 CLASS 宣告
+3.2 屬性宣告
+3.3 覆寫父類別 start 方法及實作 initApp 方法
+3.4 各 doAction 方法實作
+3.5 private 方法實作
+
+
+以下試對各區塊寫作應注意事項進行說明: 
+1.TxBean-套件及匯入區塊#
+
+package com.cathay.xx.s0.trx;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
+
+import com.cathay.common.bo.ReturnMessage;
+import com.cathay.common.exception.DataNotFoundException;
+import com.cathay.common.im.util.MessageUtil;
+import com.cathay.common.im.util.VOTool;
+import com.cathay.common.service.authenticate.UserObject;
+import com.cathay.common.trx.UCBean;
+import com.cathay.common.util.IConstantMap;
+import com.cathay.xx.s0.module.XX_S00100;
+import com.igsapp.common.trx.ServiceException;
+import com.igsapp.common.trx.TxException;
+import com.igsapp.wibc.dataobj.Context.RequestContext;
+import com.igsapp.wibc.dataobj.Context.ResponseContext;
+注意事項 
+package 放置位置請參照程式碼命名及 package 規則一文 - 連結
+import 區塊，避免直接使用 " .* " 進行宣告，必須將匯入的完整 classpath 打出
+避免留下 import ，但下方程式碼卻未引用的情況，可從 RAD 的黃色驚嘆號符號確認
+
+
+2.TxBean-SPEC註解區塊#
+
+/**
+ * <pre>
+ * Date    Version Description Author
+ * 2010/04/26  1.0 Created  
+ * 
+ * 一、  程式功能概要說明：
+ * 程式功能    黃金單身榜
+ * 程式名稱    LBM0_0300.java
+ * 作業方式    ONLINE
+ * 概要說明    黃金單身榜排行
+ * </pre>
+ * 
+ * @author i93006xx
+ * @since  2010/01/01
+ */
+注意事項 
+請將 SPEC 首頁的的規格清單貼上，如下圖所示。
+
+
+加上 @author 的 annotation ，並將開發者的 id 或姓名打上
+在前後記得標記 <pre></pre> ，維持 javaDoc 的格式
+詳細註解說明請參考 程式註解
+
+
+3.1TxBean-CLASS宣告#
+
+@SuppressWarnings("unchecked")
+public class XXS0_0100 extends UCBean {
+注意事項 
+若要抑制編譯器警訊，可在 class 宣告前加上 @SuppressWarnings("unchecked") ，有關此語法可參考此文章 - 抑制編譯器警訊 - SuppressWarnings
+必須繼承 UCBean ，因必須透過 UCBean 進行權限檢核、 ResponseContext 及 UserObj 的取得等動作。
+
+
+3.2.TxBean-屬性宣告#
+
+        
+    /* log */    
+    private static Logger log = Logger.getLogger(XXS0_0100.class);
+
+    /* Log4j是否為Debug模式 */
+    private boolean isDebug = log.isDebugEnabled();
+
+    /* 此 TxBean 程式碼共用的 ResponseContext */
+    private ResponseContext resp;
+
+    /* 此 TxBean 程式碼共用的 ReturnMessage */
+    private ReturnMessage msg;
+
+    /* 此 TxBean 程式碼共用的 UserObject */
+    private UserObject userObj;
+
+    /* 實際執行 TxBean Action 功能的 Module */
+    private XX_S00100 mXX_S00100;
+    
+
+    /* 此 TxBean 程式碼共用的成員變數 */
+    private static final BigDecimal caculateConst = new BigDecimal("0.88");
+注意事項 
+Log 及 isDebug 的用法為固定方式，有關 Log 及 isDebug 用法，請參考 Log4j用法。
+『實際執行 TxBean Action 功能的 Module』區塊，可置放此 TxBean 欲合成（compose）的所有模組的宣告，但並非所有需用到的模組都須在此進行宣告，可視該模組在此 TxBean 中被使用到的機率做判斷，若該模組在此 TxBean 中只會被使用到一次，將其宣告為區域變數即可，無需拉到 class 層級。
+『此 TxBean 程式碼共用的成員變數』，可置放此 TxBean 會共同使用的變數，如此例所示， caculateConst 便是一個計算時的常數，因在此 TxBean 中會被經常使用，所以提升至此。
+ResponseContext, ReturnMessage, UserObject為此 TxBean 程式碼共用物件，請遵照此寫法勿變動，唯 UserObject 如果不會使用到時，可將其註解。下表為此三物件的用法說明。
+
+物件	說明
+ResponseContext	類似 Servlet 的 HttpServletResponse 物件，負責把從模組取得的資料封裝傳回 JSP 。
+ReturnMessage	封裝 TxBean 執行完成的訊息（成功與錯誤），再將其放置 ResponseContext 內傳回 JSP 。
+UserObject	登入使用者的相關資訊皆包裝在此 UserObj 內，可取得其 id ，所屬單位等資訊。
+
+
+3.3.TxBean-覆寫父類別start方法及實作initApp方法#
+
+    //------------------------------------------------------------------------------
+    /** 
+     * 覆寫父類別的 start() 以強制於每次 Dispatcher 呼叫 method 時都執行程式自定的初始動作
+     */
+    public ResponseContext start(RequestContext req) throws TxException, ServiceException {
+
+        //一定要 invoke super.start() 以執行權限檢核
+        super.start(req);
+
+        //呼叫自定的初始動作
+        initApp(req);
+
+        return null;
+    }
+
+    //------------------------------------------------------------------------------
+    /**
+     * 程式自定的初始動作，通常為取出 ResponseContext, UserObject, 
+     * 及設定 ReturnMessage 及 response code.
+     */
+    private void initApp(RequestContext req) throws TxException {
+
+        // 建立此 TxBean 通用的物件
+        resp = newResponseContext();
+        msg = new ReturnMessage();
+        userObj = this.getUserObject(req);
+        mXX_S00100 = new XX_S00100();
+
+        // 先將 ReturnMessage 的 reference 加到 response coontext
+        resp.addOutputData(IConstantMap.ErrMsg, msg);
+
+        // 在 Cathay 通常只有一個 page 在前面 display，所以可以先設定
+        resp.setResponseCode("success");
+    }
+注意事項 
+覆寫 start() 的程式碼，請勿修改，照原 CODE 方式貼上即可。
+initApp() 為 TxBean 程式自定的初始動作，可在此進行 resp, msg, userObj 與自訂通用物件的初始化動作。
+initApp() 的 resp, msg, userObj 的初始、resp.addOutputData ( IConstantMap.ErrMsg, msg ) 為固定寫法請勿變動。
+
+
+3.4.TxBean-各doAction方法實作#
+
+    //------------------------------------------------------------------------------    
+    /**
+    * 初始
+    */
+    public ResponseContext doPrompt(RequestContext req){
+
+        try {
+
+                resp.addOutputData("companyList", mXX_S00100.getCompanyList());
+                
+        } catch (Exception e) {
+                log.error("", e);
+                MessageUtil.setErrorMsg(msg, "XXS0_0100_ERR_MSG01"); //初始失敗
+        }
+
+        return resp;
+    }
+
+    //------------------------------------------------------------------------------    
+    /**
+    * 查詢
+    */
+    public ResponseContext doQuery(RequestContext req) {
+
+        try {
+            //----1. 參數取得 ----
+                
+                Map reqMap = VOTool.jsonToMap(req.getParameter("info"));
+            if (isDebug) {
+                log.debug("reqMap==>");
+                log.debug(reqMap);
+            }
+            
+            String id = MapUtils.getString(reqMap, "ID");
+            String name = MapUtils.getString(reqMap, "NAME");
+            String sex = MapUtils.getString(reqMap, "SEX");
+            String birth = MapUtils.getString(reqMap, "BIRTH");
+            String company = MapUtils.getString(reqMap, "COMPANY");
+            String incomes = MapUtils.getString(reqMap, "INCOMES");
+            String incomee= MapUtils.getString(reqMap, "INCOMEE");
+
+            
+            //----2. 呼叫模組進行處理 ----
+            
+            //使用module進行查詢
+            List<Map> resultList = mXX_S00100.query( id, name, sex, birth, incomes, incomee, company);
+            
+            
+            
+            //----3. 組織並設定需回傳至JSP頁面的資料 ----
+            
+            //組織回傳物件
+            Map outputDataMap = new HashMap();
+            outputDataMap.put("resultList", resultList);
+
+            //置入resp傳至JSP
+            resp.addOutputData("outputDataMap", outputDataMap);
+
+            //頁面訊息
+            MessageUtil.setMsg(msg, "MILF002"); //查詢完成
+
+            
+        //---- 例外處理 ----
+        } catch (ErrorInputException eie) {
+            log.error(eie);
+            MessageUtil.setReturnMessage(msg, ReturnCode.ERROR_INPUT, eie.getMessage());
+
+        } catch (DataNotFoundException dnfe) {
+            log.error(dnfe);
+            MessageUtil.setReturnMessage(msg, ReturnCode.DATA_NOT_FOUND, dnfe.getMessage());
+
+        } catch (ModuleException me) {
+            if (me.getRootException() == null) {
+                log.error(me);
+                MessageUtil.setReturnMessage(msg, ReturnCode.ERROR_MODULE, me.getMessage());
+            } else {
+                log.error(me.getMessage(), me.getRootException());
+                if (me.getRootException() instanceof OverCountLimitException) {
+                    MessageUtil.setReturnMessage(msg, ReturnCode.ERROR_MODULE, "XXX0_0100_ERRMSG_OVERCOUNT");
+                } else {
+                    MessageUtil.setReturnMessage(msg, me, req, ReturnCode.ERROR_MODULE, "ME00632");
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("", e);
+            MessageUtil.setReturnMessage(msg, e, req, ReturnCode.ERROR, "查詢失敗");
+        }
+
+        return resp;
+    }
+    //------------------------------------------------------------------------------    
+注意事項 
+遵循 Java EE Servlet 的 doGet、doPost 的寫法慣例， EBAF 中的各種 Action 也以 doXXX 取名，如初始畫面的 doPrompt 方法、查詢的 doQuery 方法等。
+prompt action 為約定成俗的規定，使用 TxBean 的第一個動作就是先呼叫 doPrompt 方法，進行初始的動作後才會透過 XML 轉至 JSP ，因此 JSP 畫面在初始時所需的資料，皆在此方法內取得。
+doXXX 所有方法皆不需再丟出 Exception，全部 catch 起來，作 log 及 setMessage 的動作即可。有關 setMessage 的用法有三種方式，本例使用 MessageUtil 類別，詳細請參考 訊息使用方式 一文。
+所有 doAction 寫法，一般可歸納成三個區塊
+
+區塊	說明
+1. 參數取得	從 RequestContext 物件取得傳入參數，可透過 VOTool、MapUtils、ObjectUtils... 等工具類別來幫助我們取得所需資訊
+2. 呼叫模組進行處理	根據 SPEC 要求，呼叫不同模組進行處理，若有重覆的程式碼，可獨立抽出成 private 方法，請參考本文後續說明。
+3. 組織並設定需回傳至 JSP 頁面的資料	若需將資料回傳，習慣上會統一建立一個 outputDataMap 物件，再將所有需要回傳的資料放進此物件後，透過 resp.addOutputData，以統一的名稱 "outputDataMap" 回傳。最後，請根據 spec 要求，回傳適當的訊息 （ReturnMessage）。
+
+若 SPEC 有要求回傳中文訊息，請務必使用代碼方式取代直接鍵入中文，有關語系代碼的使用，請參考 多國語系與訊息 。
+log 的錯誤層級，一律為 error 。
+若有對資料庫進行一組以上的異動 ( 含新增、修改、刪除 )，請使用 Transaction.begin, commit, rollback 進行處理，有關 Transaction 的處理，請參考 Transaction使用說明
+以下為使用到 Transaction 的 doAction 範例
+                    .
+                    .
+
+            Transaction.begin();
+            try {
+                //將新進度(狀態變成'30'(待交易確認))、新作業時間回押DTLRB010_VO
+                mRZ_N0Z001.approveFlow(vo);
+
+                //set 更新人員資訊
+                vo.setLST_PROC_ID(empId);
+                vo.setLST_PROC_NAME(empName);
+
+                //更新票券成交單檔案狀態
+                mLR_B01800.updateDTLRB010(vo, empId, empName);
+                Transaction.commit();
+            } catch (Exception e) {
+                log.error("", e);
+                Transaction.rollback();
+                throw e;
+            }
+                    .
+                    .
+
+
+3.5.TxBean-private方法實作#
+
+    /**
+     * 總額利息收入
+     * @param INT_AMT
+     * @param INT_DDCT_AMT
+     * @return BigDecimal 四捨五入至整數位
+     */
+    private BigDecimal calINT_REVENUE(BigDecimal INT_AMT, BigDecimal INT_DDCT_AMT) {
+
+        //「總額利息收入」= 「票面利息收入」(Map.INT_AMT)+ 「利息收入減項」(Map.INT_DDCT_AMT)
+        return INT_AMT.add(INT_DDCT_AMT).setScale(0, BigDecimal.ROUND_HALF_UP);
+    }
+注意事項 
+private 方法也請保持良好寫作習慣，撰寫清楚的 javaDoc ，尤其是 private 方法通常是由 PG 自己將重覆的部分抽離出來包裝成 private 方法， SPEC 上並不會有對應說明，因此更應撰寫清楚註解，方便未來維護。
+有些情況 SPEC 上並不會特別標明方法是屬於 private 或 public ，若有發現該方法僅會供該類別使用時，請與 SA 溝通，討論是否應將該方法的可見性設為 private 。
+有時候，我們會將 doQuery 方法內實做查詢部分的程式碼抽離成一個 private 方法，有關此做法的優點，請參考 於TxBean中將query實作從doQuery方法中抽離 一文。

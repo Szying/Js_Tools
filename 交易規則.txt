@@ -1,0 +1,138 @@
+交易規則#
+
+
+交易規則，顧名思義，裡面封裝了一些規則的檢核。
+檢核模組再透過 RuleEngine 這支類別動態載入不同的交易規則來完成檢核的動作。
+
+交易規則範例UML模型
+交易規則寫作約略可分成以下區塊
+1. 套件匯入及SPEC 註解區塊
+2. CLASS 主體
+2.1 CLASS 宣告
+2.2 屬性宣告
+2.3 evaluate方法實作
+
+
+以下試對各區塊寫作應注意事項進行說明: 
+1. 交易規則-套件匯入及SPEC註解區塊區塊#
+
+package com.cathay.rz.rule.impl;
+
+import java.util.Map;
+
+import org.apache.commons.collections.MapUtils;
+import org.apache.log4j.Logger;
+
+import com.cathay.common.exception.DataNotFoundException;
+import com.cathay.common.util.db.DBUtil;
+import com.cathay.rz.IConstants;
+import com.cathay.rz.rule.AbstractRule;
+import com.cathay.rz.rule.IRuleInput;
+import com.cathay.rz.rule.ValidationException;
+import com.cathay.rz.vo.DTRZG010;
+import com.cathay.util.MessageUtil;
+
+/**
+ * 
+ * 
+ *  <pre>
+    DATE        Description     Author
+    2010/08/21  Created 柳柏任
+
+    一、  程式功能概要說明：
+    模組名稱        利息交換日是否尚未中台日結
+    模組ID        LIE005
+    概要說明        利息交換日是否尚未中台日結
+    </pre>                      
+ * 
+ * @author i9300xxx
+ * @since  2010/01/01
+ *
+ */
+注意事項 
+無論任何子系統，所有交易規則一律放在 com.cathay.rz.rule.impl 的package下。
+撰寫規範同module，詳細說明請參考 module規範
+
+
+2.1. 交易規則-CLASS主體-CLASS宣告#
+
+public class LIE005 extends AbstractRule {
+        .
+        .
+        .
+注意事項 
+必須繼承 AbstractRule 抽象類別，並強制推翻（override）evaluate方法，有關此用法的原因，請參考 交易規則的UML模型。
+若要抑制編譯器警訊，可在 class 宣告前加上 @SuppressWarnings("unchecked") ，有關此語法可參考此文章-抑制編譯器警訊 - SuppressWarnings
+
+
+2.2. 交易規則-CLASS主體-屬性宣告#
+
+        .
+        .
+        /** log */
+        private static Logger log = Logger.getLogger(XX_S00100.class);
+        
+        /**Log4j是否為Debug模式*/
+        private boolean isDebug = log.isDebugEnabled();
+        .
+        .
+注意事項 
+Log 及 isDebug 的用法為固定方式，有關 Log 及 isDebug 用法，請參考 Log4j用法。
+
+
+2.3. 交易規則-CLASS主體-evaluate方法實作#
+
+    /**
+     * 規則執行
+     * @param input IRuleInput  規則輸入參數
+     * @return boolean result   規則是否通過
+     */
+    public boolean evaluate(IRuleInput input) throws ValidationException {
+
+        //取得參數:
+        EodRuleInput ruleInput = (EodRuleInput) input;
+        Map inputMap = ruleInput.getInputMap();
+        String CHANGE_DATE = MapUtils.getString(inputMap, "CHANGE_DATE");       // 利息交換日
+
+        //檢核利息交換日是否尚未中台日結：
+        //1.    取得日結紀錄檔
+        DTRZG010 G010VO = new DTRZG010 ();
+        G010VO.setMCHD_SYS_DT(CHANGE_DATE);
+        G010VO.setMCHD_CD("LI"); 
+        G010VO.setEOD_TP(IConstants.NAV_EOD_TP_30);     //中台日結
+        
+        try{
+            G010VO = (DTRZG010) DBUtil.retrieveVOs(G010VO).get(0);
+                
+        }catch(DataNotFoundException e){
+
+            if (isDebug) {
+                log.debug("dfne! return true.");
+            }
+            
+            return true;        //找不到表示尚未中台日結
+                
+        } catch (Exception e) {
+            
+            //執行失敗
+            log.error("",e);
+            throw new ValidationException(e.getMessage(), e);
+        }
+        
+        if (G010VO.getSTS_CD().equals(IConstants.STS_CD_02)){
+                //丟出錯誤訊息 = “利息交換日已中台日結，無法作業：利息交換日={0}” {0} = CHANGE_DATE
+                throw new ValidationException(MessageUtil.getMessage("LIE005_ERRMSG_01",new Object[]{CHANGE_DATE}));
+                
+        }else if (G010VO.getSTS_CD().equals(IConstants.STS_CD_01)){
+                //丟出錯誤訊息 = “利息交換日中台日結執行中，無法作業：利息交換日={0}” {0} = CHANGE_DATE
+                throw new ValidationException(MessageUtil.getMessage("LIE005_ERRMSG_02",new Object[]{CHANGE_DATE}));
+        }
+        
+        return true;
+    }
+注意事項 
+取得參數的寫法，目前請一律先將 IRuleInput 轉型成 EodRuleInput，再利用其 getInputMap() 方法來取得傳入參數。
+交易規則一律只能丟出 Validation Exception ，若有其他的 Exception 需拋出，也請用 ValidationException 包裝後再行丟出。
+需加上清楚的 javaDoc 註解，請將 SPEC 上的方法說明，及傳入參數的名稱貼上，必要時，請加註此參數是否為必要輸入參數
+可用快捷鍵 ctrl+shift+j ，產生區塊註解
+若 SPEC 有要求回傳中文訊息，請務必使用代碼方式取代直接鍵入中文，有關語系代碼的使用，請參考 多國語言訊息的建立與使用
