@@ -1,0 +1,972 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0069)http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue -->
+<html id="top" xmlns="http://www.w3.org/1999/xhtml" xmlns:jspwiki="http://www.jspwiki.org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>
+    Project Develop Dept.：PG_HashMapNonThreadIssue
+  </title>
+  
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" media="screen, projection, print" type="text/css" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki.css">
+
+<link rel="stylesheet" type="text/css" media="print" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki_print.css">
+<!-- INCLUDERESOURCES (stylesheet) -->
+
+<!-- INCLUDERESOURCES (inlinecss) -->
+
+
+
+<noscript>
+&lt;style type="text/css"&gt;
+#hiddenmorepopup { display:block; }
+&lt;/style&gt;
+</noscript>
+
+
+<script type="text/javascript" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/mootools.js.下載"></script>
+<script type="text/javascript" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/prettify.js.下載"></script>
+<script type="text/javascript" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki-common.js.下載"></script>
+<script type="text/javascript" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki-commonstyles.js.下載"></script>
+<!-- INCLUDERESOURCES (script) -->
+
+
+
+
+
+<meta name="wikiContext" content="view">
+<meta name="wikiBaseUrl" content="http://10.95.42.51:8080/JSPWiki/">
+<meta name="wikiPageUrl" content="/JSPWiki/Wiki.jsp?page=%23%24%25">
+<meta name="wikiEditUrl" content="/JSPWiki/Edit.jsp?page=PG_HashMapNonThreadIssue">
+<meta name="wikiJsonUrl" content="/JSPWiki/JSON-RPC">
+<meta name="wikiPageName" content="PG_HashMapNonThreadIssue">
+<meta name="wikiUserName" content="10.180.106.155">
+<meta name="wikiTemplateUrl" content="/JSPWiki/templates/default/">
+<meta name="wikiApplicationName" content="Project Develop Dept.">
+
+<script type="text/javascript">//<![CDATA[
+/* Localized javascript strings: LocalizedStrings[] */
+var LocalizedStrings = {
+"javascript.sbox.clone.suffix":"-New",
+"javascript.slimbox.remoteRequest":"遠程請求 {0}（共 {1} 個）",
+"javascript.filter.all":"（全部）",
+"javascript.group.validName":"請為新組指定有效的名稱",
+"javascript.slimbox.next":"下一個&raquo;",
+"javascript.slimbox.previous":"&laquo;上一個",
+"javascript.favs.show":"按一下顯示我的最愛",
+"javascript.slimbox.close":"關閉 &#215;",
+"javascript.prefs.areyousure":"如果沒有按一下“儲存使用者資訊”按鈕，前面所做的更改將遺失。是否要退出此頁面？",
+"javascript.edit.findandreplace.nomatch":"未找到符合項！",
+"javascript.tip.default.title":"更多...",
+"javascript.collapse":"按一下折疊",
+"javascript.slimbox.error":"<h2>錯誤</h2> 您的請求有問題。<br />請重試",
+"javascript.sort.ascending":"昇冪。按一下反轉排序順序",
+"javascript.edit.areyousure":"如果沒有按一下“儲存”按鈕所做的更改將遺失。是否要退出此頁面？",
+"javascript.edit.toolbar.makeSelection":"請先進行選擇。",
+"javascript.category.title":"按一下顯示類別 [{0}] ...",
+"javascript.slimbox.info":"圖像 {0}（共 {1} 個）",
+"javascript.slimbox.directLink":"到目標的直接連結",
+"javascript.quick.edit.title":"編輯段落 {0}...",
+"javascript.favs.hide":"按一下隱藏我的最愛",
+"javascript.sort.click":"按一下排序",
+"javascript.edit.startOfPage":"（頁面開始）",
+"javascript.quick.edit":"[編輯]",
+"javascript.edit.resize":"拖動來調整文本區的大小",
+"javascript.edit.allsections":"（全部）",
+"javascript.sort.descending":"降冪。按一下反轉排序順序",
+"javascript.slimbox.close.title":"關閉 [Esc]",
+"javascript.expand":"按一下擴展",
+"javascript.sectionediting.label":"Section Overview"
+};
+
+
+/* INCLUDERESOURCES (jsfunction) */
+
+//]]></script>
+
+
+<link rel="search" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=FindPage" title="Search Project Develop Dept.">
+<link rel="help" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=TextFormattingRules" title="Help">
+
+ <link rel="start" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main" title="Front page">
+<link rel="alternate stylesheet" type="text/css" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki_print.css" title="Print friendly">
+<link rel="alternate stylesheet" type="text/css" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/jspwiki.css" title="Standard">
+<link rel="shortcut icon" type="image/x-icon" href="http://tcxlsvr603:8080/JSPWiki/images/favicon.ico">
+
+<link rel="icon" type="image/x-icon" href="http://tcxlsvr603:8080/JSPWiki/images/favicon.ico">
+
+
+
+  
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS wiki feed for the entire site." href="http://10.95.42.51:8080/JSPWiki/rss.rdf">
+<link rel="alternate" type="application/rss+xml" title="RSS wiki feed for page Project Develop Dept.: PG_HashMapNonThreadIssue." href="http://10.95.42.51:8080/JSPWiki/rss.jsp?page=PG_HashMapNonThreadIssue&amp;mode=wiki">
+
+
+
+
+<link rel="stylesheet" type="text/css" media="screen, projection, print" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/skin.css">
+
+<script type="text/javascript" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/skin.js.下載"></script>
+
+
+
+
+  
+  
+  
+</head>
+
+<body class="view">
+
+<div id="wikibody" class="fav-left">
+ 
+  
+
+
+
+
+
+
+<div id="header">
+
+  <div class="titlebox"><div class="center">
+<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=TitleBox">Welcome</a> to <a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main">Developer Wiki</a>
+</div>
+</div>
+
+  <div class="applicationlogo"> 
+    <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main" title="轉到主頁 Main ">主頁</a>
+  </div>
+
+  <div class="companylogo"></div>
+
+  
+
+
+
+
+
+
+<div class="userbox">
+
+  
+    <span class="username anonymous">
+      您好（匿名訪客）
+    </span>
+  
+  
+  
+
+  
+  
+  
+    
+      <a href="http://tcxlsvr603:8080/JSPWiki/Login.jsp?redirect=PG_HashMapNonThreadIssue" class="action login" title="登入或註冊為新用戶">登入</a>
+    
+  
+  
+  
+  
+
+  
+  
+    <a href="http://tcxlsvr603:8080/JSPWiki/UserPreferences.jsp?redirect=PG_HashMapNonThreadIssue" class="action prefs" accesskey="p" title="管理偏好選項 [ p ]">個人設定(<span class="accesskey">P</span>)
+    </a>
+  
+  
+
+  <div class="clearbox"></div>
+
+</div>
+
+  <div class="pagename">PG_HashMapNonThreadIssue</div>
+
+  <div class="searchbox">
+
+
+
+
+
+
+<form action="http://tcxlsvr603:8080/JSPWiki/Search.jsp" class="wikiform" id="searchForm" accept-charset="UTF-8">
+
+  <div style="position:relative">
+  <input onblur="if( this.value == &#39;&#39; ) { this.value = this.defaultValue }; return true; " onfocus="if( this.value == this.defaultValue ) { this.value = &#39;&#39;}; return true; " type="text" value="站內文章搜尋" name="query" id="query" size="20" accesskey="f" autocomplete="off">
+  <button type="submit" name="searchSubmit" id="searchSubmit" value="前往！" title="前往！"></button>
+  </div>
+  <div id="searchboxMenu" style="visibility: hidden; zoom: 1; opacity: 0; left: 1626px; top: 63px;" visibility="visible">
+    <div id="searchTools">
+      <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" id="quickView" class="action" onclick="SearchBox.navigate( &#39;/JSPWiki/Wiki.jsp?page=__PAGEHERE__&#39;,&#39;查看選定頁面&#39; );" title="查看選定頁面">查看</a>
+      <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" id="quickEdit" class="action" onclick="SearchBox.navigate( &#39;/JSPWiki/Edit.jsp?page=__PAGEHERE__&#39;,&#39;編輯選定頁面&#39; );" title="編輯選定頁面">編輯</a>
+      <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" id="quickClone" class="action" onclick="return SearchBox.navigate( &#39;/JSPWiki/Edit.jsp?page=__PAGEHERE__&#39;, &#39;複製選定頁面&#39;, true );" title="複製選定頁面">複製</a>
+      <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" id="advancedSearch" class="action" onclick="SearchBox.navigate( &#39;http://10.95.42.51:8080/JSPWiki/Search.jsp?query=__PAGEHERE__&#39;,&#39;PG_HashMapNonThreadIssue&#39; )" title="進階搜尋 [ f ]">搜尋</a>
+    </div>
+    <div id="searchResult">
+	  快速搜尋
+      <span id="searchTarget">（輸入提示）</span>
+      <span id="searchSpin" class="spin" style="position:absolute;display:none;"></span>
+	  <div id="searchOutput"></div>
+    </div>
+    <div id="recentSearches">
+      最近的搜尋
+      <span><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" id="recentClear">（清除）</a></span>
+    <ul id="recentItems"><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">hashmap</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">code reviewq</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">txexception</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">OverCount</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">dead luck</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">連線資訊</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">隔離</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">WAS</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">business object</a></li><li><a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#">VO</a></li></ul></div>
+  </div>
+
+</form></div>
+
+  <div class="breadcrumbs">瀏覽記錄：&nbsp;<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main">Main</a>, <a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_Code">PG_Code</a>, <a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=News">News</a>, <a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Common_mechanism">Common_mechanism</a></div>
+
+</div>
+
+  <div id="content">
+
+    <div id="page">
+      
+
+
+
+
+
+<div id="actionsTop" class="pageactions"> 
+  <ul>
+
+    
+    
+    
+
+    
+    <li id="morebutton" href="#">
+      <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=MoreMenu" class="action more">更多...</a>
+    <ul id="morepopup" style="visibility: hidden; zoom: 1; opacity: 0;">
+     
+       	
+     
+       
+     
+    
+       
+     
+       <li>
+       
+       <a class="action rawpage wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue&amp;skin=raw" title="查看頁面原始檔">查看頁面原始檔
+       </a>
+       
+       
+       </li>
+      
+        
+  
+      
+      
+      
+
+      
+	  <li class="separator">
+        <div id="moremenu"><p><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=RecentChanges">Recent Changes</a><br>
+<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PageIndex">Page Index</a><br>
+<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=About">About</a><br>
+<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SystemInfo">SystemInfo</a><br>
+</p><p><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=UnusedPages">UnusedPages</a><br>
+<a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=UndefinedPages">UndefinedPages</a><br>
+</p>
+<p></p></div>
+      </li>
+  </ul></li>
+
+  </ul>
+</div>
+
+      
+
+
+
+
+
+
+
+
+<div class="tabmenu">
+
+  
+
+  
+
+  
+  
+  
+    
+  
+    
+  
+
+
+
+  <a class="activetab" id="menu-pagecontent" accesskey="v">頁面內容</a>
+
+  
+
+  
+  <a id="menu-attach" accesskey="a">附件 (2)</a>
+  
+    
+  <a id="menu-info" href="http://tcxlsvr603:8080/JSPWiki/PageInfo.jsp?page=PG_HashMapNonThreadIssue" accesskey="i">頁面資訊</a>
+    
+  
+
+</div>
+<div class="tabs">
+
+  <div id="pagecontent">
+
+    
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="section-PG_HashMapNonThreadIssue-HashMap_E9_9D_9E_E5_90_8C_E6_AD_A5_E5_AE_89_E5_85_A8_E9_80_A0_E6_88_90CPU_E6_BB_BF_E8_BC_89_E6_8E_A2_E8_A8_8E"><span class="searchword">HashMap</span>非同步安全造成CPU滿載探討  <a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-HashMap_E9_9D_9E_E5_90_8C_E6_AD_A5_E5_AE_89_E5_85_A8_E9_80_A0_E6_88_90CPU_E6_BB_BF_E8_BC_89_E6_8E_A2_E8_A8_8E">#</a></h2>
+<h3 id="section-PG_HashMapNonThreadIssue-_E5_89_8D_E8_A8_80">前言<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-_E5_89_8D_E8_A8_80">#</a></h3>
+<p>前陣子，核心系統的 WAS 出現了莫名 CPU 滿載的情況，經過清查，發現竟然是 <span class="searchword">HashMap</span> 所造成。經查閱資料，發現對岸及國外皆有相關案例可循。
+</p>
+<p><br>
+</p>
+<dl><dt>對岸的案例</dt></dl>
+<a class="external" href="http://www.kafka0102.com/2010/08/286.html">http://www.kafka0102.com/2010/08/286.html</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+<br>
+<a class="external" href="http://blog.csdn.net/LoveJavaYDJ/archive/2010/11/09/5997565.aspx">http://blog.csdn.net/LoveJavaYDJ/archive/2010/11/09/5997565.aspx</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+<p><br>
+</p>
+<dl><dt>IBM 官方內部所撰寫的程式也曾經因為忽略這個特性，而造成類似的 Bug</dt></dl>
+<a class="external" href="http://www-01.ibm.com/support/docview.wss?rs=688&amp;uid=swg1PK96684">http://www-01.ibm.com/support/docview.wss?rs=688&amp;uid=swg1PK96684</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+<br>
+<a class="external" href="http://www-01.ibm.com/support/docview.wss?uid=swg1PM05761">http://www-01.ibm.com/support/docview.wss?uid=swg1PM05761</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+<br>
+<a class="external" href="http://www-01.ibm.com/support/docview.wss?rs=0&amp;context=SSCBRNA&amp;dc=D400&amp;uid=swg24025093&amp;loc=zh_CN&amp;cs=utf-8&amp;lang=">http://www-01.ibm.com/support/docview.wss?rs=0&amp;context=SSCBRNA&amp;dc=D400&amp;uid=swg24025093&amp;loc=zh_CN&amp;cs=utf-8&amp;lang=</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+<p>
+</p><h3 id="section-PG_HashMapNonThreadIssue-HashMap_E7_B5_90_E6_A7_8B"><span class="searchword">HashMap</span>結構<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-HashMap_E7_B5_90_E6_A7_8B">#</a></h3>
+<p>我們都知道 <span class="searchword">HashMap</span> 為非同步安全，但為什麼會造成 Cpu 滿載，再進行原因探討之前，必須先了解 <span class="searchword">HashMap</span> 的特性。
+</p>
+<p><br>
+<span class="searchword">HashMap</span> 實際上的資料結構為一個 java.util.<span class="searchword">HashMap</span>.Entry 類別的陣列 (Array)，因為在 Java 中，Array 的存取速度較快，而 <span class="searchword">HashMap</span> 一開始的設計目的便是為了達成快速存取key-value pair，不過採用 Array 帶來的缺點是必須一開始就給定大小的初值。為了解決這個問題，<span class="searchword">HashMap</span> 的處理方式為 - 給定 Array 初始大小 ( Capacity )，預設為16。之後再隨著放入 Map 中的資料接近臨界值時，進行 Array 的擴張( expand )。
+</p>
+<p><br>
+</p>
+<ul><li><b><span class="searchword">HashMap</span> 結構示意圖</b>
+</li></ul><table border="0" class="imageplugin" align="left">
+<tbody><tr><td><img src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashMap_structure.png" width="660"></td></tr>
+</tbody></table>
+
+<p>
+</p><p><br>
+我們會在後面一點再詳細說明擴張的行為，在這之前，我們先繼續了解 <span class="searchword">HashMap</span> 的結構。下方為 JDK 原始碼中 Entry 類別的寫法。一個的Entry結構包含了hash、key、value及next，其中的hash就是所謂的雜湊值，key及value則是我們所熟知Map的key – value pair，而next則是代表下一個Entry，所以可以得知 Entry是一種鏈(Chain)的結構。
+</p>
+<p><br>
+</p>
+<ul><li><b>java.util.<span class="searchword">HashMap</span>.Entry 原始碼</b>
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln"> </span><span class="typ">Map</span><span class="pun">.</span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">final</span><span class="pln"> K key</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; V value</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">final</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> hash</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> </span><span class="kwd">next</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com">/**<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* Create new entry.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*/</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> h</span><span class="pun">,</span><span class="pln"> K k</span><span class="pun">,</span><span class="pln"> V v</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> n</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; value </span><span class="pun">=</span><span class="pln"> v</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">next</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> n</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; key </span><span class="pun">=</span><span class="pln"> k</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; hash </span><span class="pun">=</span><span class="pln"> h</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">.</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">.</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br></span></pre>
+</div>
+<p><br>
+讀到這裡，你可能會疑惑，既然已經使用 Array 來存放每一個放進 <span class="searchword">HashMap</span> 中的 key - value了，會何還要有鏈的結構呢? 
+</p>
+<p><br>
+當然，理想的狀況為放入 Map 中的每一個物件都會對到一個 Array 的位置上，但 HashCode 的產生其實會有重複的情況，所以當重複 (也就是碰撞) 發生時，這個鏈的機制便可發揮作用，我們會將不同物件，卻產生出同樣雜湊值的物件放到同一個 Array 空位下的鏈中，這個空位通常稱為 bucket，而取出時，除了根據比較雜湊值是否相等之外，會再根據 key 的 equals() 方法去確認我們要取得的是哪一個物件，如底下 <span class="searchword">HashMap</span> 的 get() 中的 &lt;1&gt; 。這也就是為什麼會說當我們撰寫一個要放入 <span class="searchword">HashMap</span> 中的物件時，它的 key 必須要實作或覆寫 hashCode() 及equals() 方法的原因。
+</p>
+<p><br>
+</p>
+<ul><li><b><span class="searchword">HashMap</span>.get() 原始碼</b>
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">public</span><span class="pln"> V get</span><span class="pun">(</span><span class="typ">Object</span><span class="pln"> key</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">key </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> getForNullKey</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> hash </span><span class="pun">=</span><span class="pln"> hash</span><span class="pun">(</span><span class="pln">key</span><span class="pun">.</span><span class="pln">hashCode</span><span class="pun">());</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">[</span><span class="pln">indexFor</span><span class="pun">(</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> table</span><span class="pun">.</span><span class="pln">length</span><span class="pun">)];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;e </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="kwd">next</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Object</span><span class="pln"> k</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com">//&lt;1&gt;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><span class="pln">hash </span><span class="pun">==</span><span class="pln"> hash </span><span class="pun">&amp;&amp;</span><span class="pln"> </span><span class="pun">((</span><span class="pln">k </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">key</span><span class="pun">)</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> key </span><span class="pun">||</span><span class="pln"> key</span><span class="pun">.</span><span class="pln">equals</span><span class="pun">(</span><span class="pln">k</span><span class="pun">)))</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">value</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br></span></pre>
+</div>
+<p><br>
+再來看一下 <span class="searchword">HashMap</span> 中的 AddEntry() 方法，他是當我們使用 put() 的時候會被呼叫到，從原始碼中可以發現，一開始會把目前 table 中的 Entry 保留到 e，之後在 new Entry 建構子的最後一個參數 e 傳進去放至 next 的位置，所以當目前 table 為空時，e 就是 null，若 table 已經有值，新放進去的物件就會在這個鏈的頂端。而最下面的判斷式則是先前提到的擴張行為，threshold 是臨界值，resize() 則是擴張方法，在這邊先簡單提到，很快我們會再詳細說明。
+</p>
+<p><br>
+</p>
+<ul><li><b><span class="searchword">HashMap</span>.AddEntry() 原始碼</b>
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">void</span><span class="pln"> addEntry</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> hash</span><span class="pun">,</span><span class="pln"> K key</span><span class="pun">,</span><span class="pln"> V value</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> bucketIndex</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">[</span><span class="pln">bucketIndex</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; table</span><span class="pun">[</span><span class="pln">bucketIndex</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;(</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> key</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">,</span><span class="pln"> e</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">size</span><span class="pun">++</span><span class="pln"> </span><span class="pun">&gt;=</span><span class="pln"> threshold</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; resize</span><span class="pun">(</span><span class="lit">2</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> table</span><span class="pun">.</span><span class="pln">length</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span></pre>
+</div>
+<p><br>
+下面這邊是一段範例程式，用來模擬放入資料至 <span class="searchword">HashMap</span> 的結構中時，indexFor() 的用處，我們示範產生 16 個 String 物件，然後呼叫該物件的 hashCode() 方法取得 hashCode ，再透過 <span class="searchword">HashMap</span> 的 indexFor() 的演算後，得到 index ，再將它放入對應的Entry<u></u>中。
+</p>
+<p><br>
+</p>
+<ul><li><b><span class="searchword">HashMap</span>.indexFor() 範例程式碼</b>
+</li></ul><div class="tabmenu"><a id="menu-tab-程式執行結果" class="activetab">程式執行結果</a><a id="menu-tab-範例模擬程式碼" class="">範例模擬程式碼</a></div><div class="tabbedSection tabs">
+<div class="tab-程式執行結果" id="tab-程式執行結果">
+<pre>----------------------------------------------------------
+hashCode:1661797210, Bucket index:10
+hashCode:-1745666405, Bucket index:11
+hashCode:-858162724, Bucket index:12
+hashCode:29340957, Bucket index:13
+hashCode:916844638, Bucket index:14
+hashCode:1804348319, Bucket index:15
+hashCode:-1603115296, Bucket index:0
+hashCode:-715611615, Bucket index:1
+hashCode:171892066, Bucket index:2
+hashCode:1059395747, Bucket index:3
+hashCode:1160157705, Bucket index:9
+hashCode:2047661386, Bucket index:10
+hashCode:-1359802229, Bucket index:11
+hashCode:-472298548, Bucket index:12
+hashCode:415205133, Bucket index:13
+hashCode:1302708814, Bucket index:14
+---Summary---------------------------------------------------
+所有put進去的元素會透過indexFor()演算法相對平均放到各個Bucket中
+Bucket index 0 ---&gt; 1
+Bucket index 1 ---&gt; 1
+Bucket index 2 ---&gt; 1
+Bucket index 3 ---&gt; 1
+Bucket index 9 ---&gt; 1
+Bucket index 10 ---&gt; 2
+Bucket index 11 ---&gt; 2
+Bucket index 12 ---&gt; 2
+Bucket index 13 ---&gt; 2
+Bucket index 14 ---&gt; 2
+Bucket index 15 ---&gt; 1
+------------------------------------------------------------
+當Hashcode值一樣時，會被放在同一個Bucket中...
+Hashcode :3194802---&gt; Bucket index :2
+Hashcode :3194802---&gt; Bucket index :2
+</pre>
+<p></p><div class="clearbox"></div></div>
+
+<div class="tab-範例模擬程式碼 hidetab" id="tab-範例模擬程式碼">
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ"><span class="searchword">HashMap</span></span><span class="pun">;</span><span class="pln"><br></span><span class="kwd">import</span><span class="pln"> java</span><span class="pun">.</span><span class="pln">util</span><span class="pun">.</span><span class="typ">Set</span><span class="pun">;</span><span class="pln"><br><br></span><span class="com">/**<br>&nbsp;* @author YJW<br>&nbsp;*<br>&nbsp;*/</span><span class="pln"><br></span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ"><span class="searchword">HashMap</span>Simulator</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="com">/**<br>&nbsp; &nbsp; &nbsp;* Returns index for hash code h. <br>&nbsp; &nbsp; &nbsp;*/</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> indexFor</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> h</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> length</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> h </span><span class="pun">&amp;</span><span class="pln"> </span><span class="pun">(</span><span class="pln">length</span><span class="pun">-</span><span class="lit">1</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="com">/**<br>&nbsp; &nbsp; &nbsp;* @param args<br>&nbsp; &nbsp; &nbsp;*/</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="typ">String</span><span class="pun">[]</span><span class="pln"> args</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> table_length </span><span class="pun">=</span><span class="pln"> </span><span class="lit">16</span><span class="pun">;</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"----------------------------------------------------------"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ"><span class="searchword">HashMap</span></span><span class="pun">&lt;</span><span class="typ">Integer</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">&gt;</span><span class="pln"> countMap </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ"><span class="searchword">HashMap</span></span><span class="pun">&lt;</span><span class="typ">Integer</span><span class="pun">,</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">&gt;();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">&lt;=</span><span class="lit">15</span><span class="pln"> </span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++){</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> hashcode </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">(</span><span class="pln">i</span><span class="pun">).</span><span class="kwd">toString</span><span class="pun">().</span><span class="pln">concat</span><span class="pun">(</span><span class="str">"Cathay"</span><span class="pun">).</span><span class="pln">hashCode</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Integer</span><span class="pln"> index </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">(</span><span class="pln">indexFor</span><span class="pun">(</span><span class="pln">hashcode</span><span class="pun">,</span><span class="pln"> table_length</span><span class="pun">));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="com">//sum the count</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">countMap</span><span class="pun">.</span><span class="pln">get</span><span class="pun">(</span><span class="pln">index</span><span class="pun">)!=</span><span class="kwd">null</span><span class="pun">){</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; countMap</span><span class="pun">.</span><span class="pln">put</span><span class="pun">(</span><span class="pln">index</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">(</span><span class="pln">countMap</span><span class="pun">.</span><span class="pln">get</span><span class="pun">(</span><span class="pln">index</span><span class="pun">).</span><span class="pln">intValue</span><span class="pun">()+</span><span class="lit">1</span><span class="pun">));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="kwd">else</span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; countMap</span><span class="pun">.</span><span class="pln">put</span><span class="pun">(</span><span class="pln">index</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"hashCode:"</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> hashcode </span><span class="pun">+</span><span class="pln"> </span><span class="str">", index:"</span><span class="pun">+</span><span class="pln"> index</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"---Summary---------------------------------------------------"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"所有put進去的元素會透過indexFor()演算法相對平均放到各個Bucket中"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Set</span><span class="pun">&lt;</span><span class="typ">Integer</span><span class="pun">&gt;</span><span class="pln"> keySet </span><span class="pun">=</span><span class="pln"> countMap</span><span class="pun">.</span><span class="pln">keySet</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pun">(</span><span class="typ">Integer</span><span class="pln"> i </span><span class="pun">:</span><span class="pln">keySet</span><span class="pun">){</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"index "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> i </span><span class="pun">+</span><span class="pln"> </span><span class="str">" ---&gt; "</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> countMap</span><span class="pun">.</span><span class="pln">get</span><span class="pun">(</span><span class="pln">i</span><span class="pun">));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"------------------------------------------------------------"</span><span class="pun">);</span><span class="pln"> &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"當Hashcode值一樣時，會被放在同一個Bucket中..."</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Hashcode :"</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">String</span><span class="pun">(</span><span class="str">"haha"</span><span class="pun">).</span><span class="pln">hashCode</span><span class="pun">()</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="str">"---&gt; Bucket index :"</span><span class="pln"> </span><span class="pun">+</span><span class="pln">indexFor</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">String</span><span class="pun">(</span><span class="str">"haha"</span><span class="pun">).</span><span class="pln">hashCode</span><span class="pun">(),</span><span class="pln"> table_length</span><span class="pun">));</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="pln">err</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"Hashcode :"</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">String</span><span class="pun">(</span><span class="str">"haha"</span><span class="pun">).</span><span class="pln">hashCode</span><span class="pun">()</span><span class="pln"> </span><span class="pun">+</span><span class="pln"> </span><span class="str">"---&gt; Bucket index :"</span><span class="pln"> </span><span class="pun">+</span><span class="pln">indexFor</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">String</span><span class="pun">(</span><span class="str">"haha"</span><span class="pun">).</span><span class="pln">hashCode</span><span class="pun">(),</span><span class="pln"> table_length</span><span class="pun">));</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br></span><span class="pun">}</span><span class="pln"><br></span></pre>
+</div>
+<p>
+</p><p></p><div class="clearbox"></div></div>
+</div>
+
+<p><br>
+回到程式結果，雖然產生出的 index 並沒有完全放到每一個 Bucket 中，但是也相對平均的分配到各個bucket 中。因此可以知道indexFor() 主要的用意在於讓每一個 bucket 中的 Entry 鏈的不要太長。因為雖然呼叫 <span class="searchword">HashMap</span> 的 get() 時，透過 hashCode 可以快速得知我們要取用的物件的所在位置，但 Entry 鏈中的搜尋方式仍是採用線性的搜尋，因此若不平均分配到各個 bucket 中，便會使得同一個 bucket 中的 Entry 鏈過長，導致效能變差。
+</p>
+<p><br>
+至於最後一個例子則示範，當 hashCode 重複時，會被放到同一個bucket中的Entry鏈，這也證明了我們先前提到的，必須再透過 equals() 來確認要取出的物件是否為我們所需要的。indexFor()在此也扮演了另一個角色，就是確保我們可以用相同的key去取到同一個bucket下的物件。
+</p>
+<p><br>
+</p>
+<dl><dt>補充說明</dt></dl>
+在這個範例中，我們省略了一個動作，<span class="searchword">HashMap</span> 實際運作時，呼叫了物件的 hashCode() 後，會再呼叫它自身的 hash() 方法去重算一次 hashCode，此舉是為了確保最後要傳入indexFor()的雜湊值式夠平均，一個好的hashCode() 所產生的值應該平均分佈，若不平均，就有可能造成同一個 Bucket 下的鏈過長。
+<p>
+</p><p>
+</p><h3 id="section-PG_HashMapNonThreadIssue-HashMap_E7_9A_84_E6_93_B4_E5_BC_B5Expand_E8_A1_8C_E7_82_BA"><span class="searchword">HashMap</span>的擴張( Expand )行為<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-HashMap_E7_9A_84_E6_93_B4_E5_BC_B5Expand_E8_A1_8C_E7_82_BA">#</a></h3>
+<p>再回到擴張的行為，我們已經知道 Array 的大小有限，因此當放入的大小逼近一個值時，Array 便會擴張，這個值我們稱做臨界值(threhold)，他的公式如下：
+</p>
+<pre>臨界值(threhold) = capacity * load factor
+</pre>
+<p><br>
+load factor 為一型態為 float 的值，預設為 0.75。舉例來說，當該 Map 中被放入的數量達到 16 * 0.75 = 12 時，便會產生一個為原尺寸兩倍的新 Entry 陣列，所以新 Entry 陣列的大小即為 16 * 2 = 32。而原 Entry 陣列內的值會被 rehash 至這個新的 Entry 陣列中。繼續來看一下 <span class="searchword">HashMap</span>.addEntry() 這邊的原始碼，我們已經知道，put()會去呼叫addEntry() 這個方法，而 addEntry() 這邊會有一個判斷式(如下程式碼)，當大小等於或大於臨界值時，便會在呼叫 resize() 方法，resize() 方法會產生一個目前兩倍大小的新的Entry<u></u>，再呼叫 transfer() 方法進行 rehash 的動作，也就是重做取得 hashCode ，呼叫 indexFor()，再塞入對應的 bucket 中。
+</p>
+<p><br>
+</p>
+<div class="tabmenu"><a id="menu-tab-put()" class="activetab">put()</a><a id="menu-tab-addEntry()" class="">add Entry()</a><a id="menu-tab-resize()" class="">resize()</a><a id="menu-tab-transfer()" class="">transfer()</a></div><div class="tabbedSection tabs">
+<div class="tab-put()" id="tab-put()">
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">public</span><span class="pln"> V put</span><span class="pun">(</span><span class="pln">K key</span><span class="pun">,</span><span class="pln"> V value</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">key </span><span class="pun">==</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> putForNullKey</span><span class="pun">(</span><span class="pln">value</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> hash </span><span class="pun">=</span><span class="pln"> hash</span><span class="pun">(</span><span class="pln">key</span><span class="pun">.</span><span class="pln">hashCode</span><span class="pun">());</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> indexFor</span><span class="pun">(</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> table</span><span class="pun">.</span><span class="pln">length</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">[</span><span class="pln">i</span><span class="pun">];</span><span class="pln"> e </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="kwd">next</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Object</span><span class="pln"> k</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><span class="pln">hash </span><span class="pun">==</span><span class="pln"> hash </span><span class="pun">&amp;&amp;</span><span class="pln"> </span><span class="pun">((</span><span class="pln">k </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">key</span><span class="pun">)</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> key </span><span class="pun">||</span><span class="pln"> key</span><span class="pun">.</span><span class="pln">equals</span><span class="pun">(</span><span class="pln">k</span><span class="pun">)))</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; V oldValue </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="pln">value</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e</span><span class="pun">.</span><span class="pln">value </span><span class="pun">=</span><span class="pln"> value</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e</span><span class="pun">.</span><span class="pln">recordAccess</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> oldValue</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; modCount</span><span class="pun">++;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; addEntry</span><span class="pun">(</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> key</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">,</span><span class="pln"> i</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span></pre>
+</div>
+<p></p><div class="clearbox"></div></div>
+
+<div class="tab-addEntry() hidetab" id="tab-addEntry()">
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">void</span><span class="pln"> addEntry</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> hash</span><span class="pun">,</span><span class="pln"> K key</span><span class="pun">,</span><span class="pln"> V value</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">int</span><span class="pln"> bucketIndex</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">[</span><span class="pln">bucketIndex</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; table</span><span class="pun">[</span><span class="pln">bucketIndex</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;(</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> key</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">,</span><span class="pln"> e</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">size</span><span class="pun">++</span><span class="pln"> </span><span class="pun">&gt;=</span><span class="pln"> threshold</span><span class="pun">)</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; resize</span><span class="pun">(</span><span class="lit">2</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> table</span><span class="pun">.</span><span class="pln">length</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span></pre>
+</div>
+<p></p><div class="clearbox"></div></div>
+
+<div class="tab-resize() hidetab" id="tab-resize()">
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">void</span><span class="pln"> resize</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> newCapacity</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">[]</span><span class="pln"> oldTable </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> oldCapacity </span><span class="pun">=</span><span class="pln"> oldTable</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">oldCapacity </span><span class="pun">==</span><span class="pln"> MAXIMUM_CAPACITY</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; threshold </span><span class="pun">=</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">.</span><span class="pln">MAX_VALUE</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">return</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">[]</span><span class="pln"> newTable </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Entry</span><span class="pun">[</span><span class="pln">newCapacity</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; transfer</span><span class="pun">(</span><span class="pln">newTable</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; table </span><span class="pun">=</span><span class="pln"> newTable</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; threshold </span><span class="pun">=</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pun">)(</span><span class="pln">newCapacity </span><span class="pun">*</span><span class="pln"> loadFactor</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span></pre>
+</div>
+<p></p><div class="clearbox"></div></div>
+
+<div class="tab-transfer() hidetab" id="tab-transfer()">
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="pln"> &nbsp; &nbsp;</span><span class="kwd">void</span><span class="pln"> transfer</span><span class="pun">(</span><span class="typ">Entry</span><span class="pun">[]</span><span class="pln"> newTable</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">[]</span><span class="pln"> src </span><span class="pun">=</span><span class="pln"> table</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> newCapacity </span><span class="pun">=</span><span class="pln"> newTable</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> j </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> j </span><span class="pun">&lt;</span><span class="pln"> src</span><span class="pun">.</span><span class="pln">length</span><span class="pun">;</span><span class="pln"> j</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> e </span><span class="pun">=</span><span class="pln"> src</span><span class="pun">[</span><span class="pln">j</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">e </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; src</span><span class="pun">[</span><span class="pln">j</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">do</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">Entry</span><span class="pun">&lt;</span><span class="pln">K</span><span class="pun">,</span><span class="pln">V</span><span class="pun">&gt;</span><span class="pln"> </span><span class="kwd">next</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">.</span><span class="kwd">next</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> indexFor</span><span class="pun">(</span><span class="pln">e</span><span class="pun">.</span><span class="pln">hash</span><span class="pun">,</span><span class="pln"> newCapacity</span><span class="pun">);</span><span class="pln"> &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e</span><span class="pun">.</span><span class="kwd">next</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> newTable</span><span class="pun">[</span><span class="pln">i</span><span class="pun">];</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; newTable</span><span class="pun">[</span><span class="pln">i</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> e</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">next</span><span class="pun">;</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">while</span><span class="pln"> </span><span class="pun">(</span><span class="pln">e </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">}</span></pre>
+</div>
+<p></p><div class="clearbox"></div></div>
+</div>
+
+<h3 id="section-PG_HashMapNonThreadIssue-_E5_95_8F_E9_A1_8C_E7_99_BC_E7_94_9F_E9_BB_9E">問題發生點<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-_E5_95_8F_E9_A1_8C_E7_99_BC_E7_94_9F_E9_BB_9E">#</a></h3>
+<p>講了這麼多，目的是要讓我們比較了解問題發生點的原因，而這次問題的發生點也就在這個 transfer() 方法的 do while 迴圈內，從本文一開始所列出對岸同胞所寫的文章的分析我們可以知道，主要的原因在於如果是多條 Thread 同時或先後進到了這個迴圈內時，可能會造成 Entry 鏈的先後次序不同而造成無窮迴圈的狀況，因此會造成 CPU 滿載。
+</p>
+<p><br>
+可能造成死結或無窮迴圈有很多種情境，不過可以確定的是，當我們在多執行緒環境的情況要共用同一個Map的時候，就不應該也不能夠採用 <span class="searchword">HashMap</span> ，否則就可能會有死結或是無窮迴圈的狀況發生。查看目前 Ebaf 架構的程式中，最可能發生這種狀況的就是將 <span class="searchword">HashMap</span> 置於 Class 成員變數，且宣告成 static。由於 Web Container 為一個多執行緒的環境，因此宣告成 static 的 <span class="searchword">HashMap</span> 有可能同時被不同的執行緒所存取，也就會有上述所提的無窮迴圈的狀況發生。
+</p>
+<p><br>
+下面這個程式是該文章中所寫的一個模擬 CPU 滿載狀況的程式，有興趣的朋友可以跑跑看。
+<br>
+</p>
+<div class="prettify">
+<pre class="prettyprint prettified"><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">TestLock</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; </span><span class="kwd">private</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="typ"><span class="searchword">HashMap</span></span><span class="pln"> map </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ"><span class="searchword">HashMap</span></span><span class="pun">();</span><span class="pln"><br>&nbsp; </span><span class="kwd">public</span><span class="pln"> </span><span class="typ">TestLock</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">final</span><span class="pln"> </span><span class="typ">Thread</span><span class="pln"> t1 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Thread</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="lit">@Override</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> run</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">&lt;</span><span class="lit">500000</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map</span><span class="pun">.</span><span class="pln">put</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">(</span><span class="pln">i</span><span class="pun">),</span><span class="pln"> i</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="kwd">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"t1 over"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">};</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">final</span><span class="pln"> </span><span class="typ">Thread</span><span class="pln"> t2 </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Thread</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="lit">@Override</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> run</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="kwd">for</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> i</span><span class="pun">=</span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">&lt;</span><span class="lit">500000</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map</span><span class="pun">.</span><span class="pln">put</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Integer</span><span class="pun">(</span><span class="pln">i</span><span class="pun">),</span><span class="pln"> i</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="typ">System</span><span class="pun">.</span><span class="kwd">out</span><span class="pun">.</span><span class="pln">println</span><span class="pun">(</span><span class="str">"t2 over"</span><span class="pun">);</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="pun">};</span><span class="pln"><br>&nbsp; &nbsp; t1</span><span class="pun">.</span><span class="pln">start</span><span class="pun">();</span><span class="pln"><br>&nbsp; &nbsp; t2</span><span class="pun">.</span><span class="pln">start</span><span class="pun">();</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br>&nbsp;<br>&nbsp; </span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> main</span><span class="pun">(</span><span class="kwd">final</span><span class="pln"> </span><span class="typ">String</span><span class="pun">[]</span><span class="pln"> args</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; &nbsp; </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">TestLock</span><span class="pun">();</span><span class="pln"><br>&nbsp; </span><span class="pun">}</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br></span></pre>
+</div>
+<h3 id="section-PG_HashMapNonThreadIssue-_E8_A7_A3_E6_B1_BA_E6_96_B9_E5_BC_8F_E6_AF_94_E8_BC_83">解決方式比較<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-_E8_A7_A3_E6_B1_BA_E6_96_B9_E5_BC_8F_E6_AF_94_E8_BC_83">#</a></h3>
+<p>針對執行緒安全，可以採行的方案有多種，以下分別對各種方案進行優缺點分析，並提出建議。
+</p>
+<p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-1._E4_BD_BF_E7_94_A8HashTable_E5_8F_96_E4_BB_A3HashMap">1. 使用 HashTable 取代 <span class="searchword">HashMap</span> <a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-1._E4_BD_BF_E7_94_A8HashTable_E5_8F_96_E4_BB_A3HashMap">#</a></h4>
+<p></p>
+<p>HashTable 雖為同步安全，但其效能上可能會造成影響。主要原因有兩種，一是內部實作大多將方法宣告設定成 synchronize，而我們知道 synchronize 在多條執行緒爭搶的狀況下可能會影響效能。另一點則為演算法的機制，HashTable 演算法的設計較新型態的 <span class="searchword">HashMap</span> 舊，亦是影響執行效能的一種，<b>因此在沒有 JDK 版本的限制下，我們應該不要再考慮 HashTable。</b>
+</p>
+<p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-2._E5_BB_BA_E7_AB_8BHashMap_E6_99_82_E5_B0_87_E9_A0_90_E5_A7_8B_E5_80_BC_E8_A8_AD_E5_A4_A7_E4_B8_80_E9_BB_9E_E9_81_BF_E5_85_8DHashMapExpand">2. 建立 <span class="searchword">HashMap</span> 時, 將預始值設大一點, 避免 <span class="searchword">HashMap</span> expand<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-2._E5_BB_BA_E7_AB_8BHashMap_E6_99_82_E5_B0_87_E9_A0_90_E5_A7_8B_E5_80_BC_E8_A8_AD_E5_A4_A7_E4_B8_80_E9_BB_9E_E9_81_BF_E5_85_8DHashMapExpand">#</a></h4>
+<p></p>
+<p>這只能算是半套的解法，且在<b>大多數的情況下，我們無法確認最終放入 <span class="searchword">HashMap</span>中的數量大小，一但一開始給的太大，也會佔去過多的記憶體空間，因此不是一個好的解決方式。</b>
+</p>
+<p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-3._E5_B0_8DHashMap_E9_80_B2_E8_A1_8C_E6_93_8D_E4_BD_9C_E7_9A_84_E7_A8_8B_E5_BC_8F_E7_A2_BC_E4_BD_BF_E7_94_A8Synchronize_E8_AA_9E_E6_B3_95_E9_81_BF_E5_85_8D_E5_90_8C_E6_99_82Access_E5_90_8C_E4_B8_80_E5_80_8BHashMap">3. 對 <span class="searchword">HashMap</span> 進行操作的程式碼，使用 synchronize 語法，避免同時 access 同一個 <span class="searchword">HashMap</span><a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-3._E5_B0_8DHashMap_E9_80_B2_E8_A1_8C_E6_93_8D_E4_BD_9C_E7_9A_84_E7_A8_8B_E5_BC_8F_E7_A2_BC_E4_BD_BF_E7_94_A8Synchronize_E8_AA_9E_E6_B3_95_E9_81_BF_E5_85_8D_E5_90_8C_E6_99_82Access_E5_90_8C_E4_B8_80_E5_80_8BHashMap">#</a></h4>
+<p></p>
+<p>這邊可分為兩種作法，一種是直接將整個 <span class="searchword">HashMap</span> 作 synchronize 處理，另一種為針對必須要保護的那段程式碼，作 synchronize 的動作。兩者的差別在於效能及保護性的考慮，對整個 <span class="searchword">HashMap</span> 作 synchronize 當然保護性較高，但也容易造成 waiting 的情況。所以以效能考量，當然還是後者較佳，不過，與 HashTable 一樣，仍會有多條執行緒爭搶的效能問題。 
+</p>
+<p><br>
+</p>
+<ul><li><b>將整個 <span class="searchword">HashMap</span> 作 synchronize 處理</b>
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="typ">Collections</span><span class="pun">.</span><span class="pln">synchronizedMap</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ"><span class="searchword">HashMap</span></span><span class="pun">());</span></pre>
+</div>
+<p><br>
+</p>
+<ul><li><b>針對特定區塊做 synchronize 處理</b>
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="kwd">synchronized</span><span class="pln"> </span><span class="pun">(</span><span class="pln">lockObject</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> <br>&nbsp; </span><span class="com">// update object state</span><span class="pln"><br></span><span class="pun">}</span></pre>
+</div>
+<h4 id="section-PG_HashMapNonThreadIssue-4.ReentrantLock_E8_88_87ConcurrentHashMap">4. ReentrantLock 與 Concurrent<span class="searchword">HashMap</span><a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-4.ReentrantLock_E8_88_87ConcurrentHashMap">#</a></h4>
+<p>Concurrent<span class="searchword">HashMap</span> 相較於 Collections.synchronizedMap(new <span class="searchword">HashMap</span>()); 主要改變在於使用 JDK 5.0後，所推出的 ReentrantLock 來取代 Synchronize 的 Lock 方式。
+</p>
+<p><br>
+有關 ReentrantLock 的說明，可以參考 IBM 這篇文章 - <a class="external" href="http://www.ibm.com/developerworks/tw/java/library/j-jtp10264/">Java 理論與實務: JDK 5.0 中更靈活、更具可伸縮性的鎖定機制</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+</p>
+<p><br>
+</p>
+<dl><dt></dt></dl>
+以下試就 ReentrantLock 的一些特性，作簡單的摘要。
+<ul><li>java.util.concurrent.lock 中的 Lock 框架將鎖定實作為一個 Java 類別，而不是作為語言的特性，synchronize 的鎖定是由 JVM 來控制。
+</li></ul><ul><li>擁有與 synchronized 相同的記憶體管理和並行性語義，但當許多執行緒都在爭用同一個 lock 時，使用 ReentrantLock 的總體效能影響通常要比 synchronized 少得多。
+</li></ul><ul><li>因為採用 Java 類別的方式，因此提供了多樣化的同步方式，如有時間限制的同步、可以Interrupt的同步等等
+</li></ul><ul><li>Lock 和 synchronized 有一點明顯的區別 —— lock 必須在 finally 塊中釋放。否則，如果受保護的程式碼拋出異常， lock 就有可能永遠得不到釋放！
+</li></ul><div class="prettify">
+<pre class="prettyprint prettified"><span class="typ">Lock</span><span class="pln"> </span><span class="kwd">lock</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ReentrantLock</span><span class="pun">();</span><span class="pln"><br><br></span><span class="kwd">lock</span><span class="pun">.</span><span class="kwd">lock</span><span class="pun">();</span><span class="pln"><br></span><span class="kwd">try</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> <br>&nbsp; </span><span class="com">// update object state</span><span class="pln"><br></span><span class="pun">}</span><span class="pln"><br></span><span class="kwd">finally</span><span class="pln"> </span><span class="pun">{</span><span class="pln"><br>&nbsp; </span><span class="kwd">lock</span><span class="pun">.</span><span class="pln">unlock</span><span class="pun">();</span><span class="pln"> <br></span><span class="pun">}</span></pre>
+</div>
+<ul><li>預設情況下 ReentrantLock 執行緒請求順序是"不公平"的。而不公平 lock 允許討價還價，在這種情況下，執行緒有時可以比先請求 lock 的其他執行緒先得到 lock 。
+</li></ul><p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-ConcurrentHashMap">Concurrent<span class="searchword">HashMap</span><a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-ConcurrentHashMap">#</a></h4>
+<p></p>
+<p><br>
+前面提到，Concurrent<span class="searchword">HashMap</span> 採用 ReentrantLock 來進行加鎖的動作。不過除此之外，Concurrent<span class="searchword">HashMap</span> 的資料結構，針對多執行緒的效能影響，也稍微做了一點調整。
+</p>
+<p><br>
+</p>
+<ul><li><b>Concurrent<span class="searchword">HashMap</span> 結構示意圖</b> - 圖片來源http://gaolixu.javaeye.com/blog/548758t
+</li></ul><table border="0" class="imageplugin" align="left">
+<tbody><tr><td><img src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashTableVSConcurrentHashMap.jpg" width="660"></td></tr>
+</tbody></table>
+
+<p><br>
+Concurrent<span class="searchword">HashMap</span> 與 HashTable 及 <span class="searchword">HashMap</span> 結構的最大差別就在於，他多了一層 Segment 的結構，主要的用意在於，以往 HashTable ，在做鎖定時，是將整個 Hash 表鎖定，直到所有動作完成後，其他執行緒才能進來，這樣的安全性當然很高，但是也造成了效能的問題。而 Concurrent<span class="searchword">HashMap</span> 透過Segment 的結構，允許多條執行緒，分段進行存取，只有在要對全部的項目進行異動時，才會將整個區段鎖定，這樣的設計，稱作 lock striping (分離鎖)。再加上使用 ReentrantLock ，當然效能上的提升自然顯而易見了。
+</p>
+<p><br>
+另外，Concurrent<span class="searchword">HashMap</span> 在使用 get() 的時候，只有在特殊的情況才會加鎖，如此，更可以加快存取的速度，不過也因此它的 get() 為"弱一致性"，這會造成一些問題，我們稍後會提到。如果對 Concurrent<span class="searchword">HashMap</span> 的細節有興趣，可以繼續參考JavaEye 這篇文章 - <a class="external" href="http://gaolixu.javaeye.com/blog/548758">http://gaolixu.javaeye.com/blog/548758</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">。
+</p>
+<p>
+</p><p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-_E6_95_88_E8_83_BD_E6_AF_94_E8_BC_83">效能比較<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-_E6_95_88_E8_83_BD_E6_AF_94_E8_BC_83">#</a></h4>
+<p></p>
+<p><br>
+在此，根據 Thinking in JAVA 於第 21 章並行性的一段範例程式碼，來比較 Concurrent<span class="searchword">HashMap</span> 及 Collections.synchronizedMap(new <span class="searchword">HashMap</span>()); 兩者的效能差異。
+</p>
+<div class="tabmenu"><a id="menu-tab-執行結果" class="activetab">執行結果</a></div><div class="tabbedSection tabs">
+<div class="tab-執行結果" id="tab-執行結果">
+<pre>/* Output: (Sample)
+Type                             Read time     Write time
+Synched <span class="searchword">HashMap</span> 10r 0w        306052025049              0
+Synched <span class="searchword">HashMap</span> 9r 1w         428319156207    47697347568
+readTime + writeTime =        476016503775
+Synched <span class="searchword">HashMap</span> 5r 5w         243956877760   244012003202
+readTime + writeTime =        487968880962
+----------------------------------------------------------
+Concurrent<span class="searchword">HashMap</span> 10r 0w       23352654318              0
+Concurrent<span class="searchword">HashMap</span> 9r 1w        18833089400     1541853224
+readTime + writeTime =         20374942624
+Concurrent<span class="searchword">HashMap</span> 5r 5w        12037625732    11850489099
+readTime + writeTime =         23888114831
+*///:~
+</pre>
+<div class="clearbox"></div></div>
+</div>
+<p><br>
+從結果可以看出，無論是在讀或寫的效能上，Concurrent<span class="searchword">HashMap</span> 都比 Collections.synchronizedMap(new <span class="searchword">HashMap</span>()); 來的優異。不過這是指這兩者的比較而言，若是與針對特定區塊做 synchronize 處理的比較上，可能差異就沒這麼大。<b>實際上，ReentrantLock 在資源爭奪不激烈的情況下時，效能是略遜於 synchronized 的，但當資源爭奪很激烈時，ReentrantLock 的效能就來的快很多了。</b>
+</p>
+<p><br>
+</p><h4 id="section-PG_HashMapNonThreadIssue-ReentrantLock_E5_8F_8AConcurrentHashMap_E7_9A_84_E6_BD_9B_E5_9C_A8_E5_95_8F_E9_A1_8C">ReentrantLock 及 Concurrent<span class="searchword">HashMap</span> 的潛在問題<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-ReentrantLock_E5_8F_8AConcurrentHashMap_E7_9A_84_E6_BD_9B_E5_9C_A8_E5_95_8F_E9_A1_8C">#</a></h4>
+<p></p>
+<p>不過當然 ReentrantLock 及 Concurrent<span class="searchword">HashMap</span> 還是有一些潛在問題需要注意，以避免誤用。以下說明之：
+</p>
+<p><br>
+</p>
+<dl><dt>上述提及的 IBM 文章中，提到 ReentrantLock 的主要兩個缺點</dt><dd></dd></dl>
+<ul><li>對於 java.util.concurrent.lock 中的鎖定類別來說，synchronized 仍然有一些優勢。一般來說，在使用同步的時候，不能忘記釋放 lock ；不過 ，若採用 synchronized 的方式，在退出 synchronized 區塊時，JVM 會為您做這件事。但若使用 ReentrantLock，您很容易忘記用 finally 塊釋放 lock ，這相較於 synchronized 來說不夠直覺。
+</li></ul><ul><li>當 JVM 用 synchronized 管理鎖定請求和釋放時，JVM 在產生執行緒轉儲時能夠包括鎖定資訊。這些對偵錯非常有價值，因為它們能標識 deadlock 或者其他異常行為的來源。Lock 類別只是普通的類別，JVM 不知道具體哪個執行緒擁有 Lock 對象。而且，幾乎每個開發人員都熟悉 synchronized，它可以在 JVM 的所有版本中工作。
+</li></ul><p><br>
+</p>
+<dl><dt>Concurrent<span class="searchword">HashMap</span> 的潛在問題</dt></dl>
+<ul><li>如前面所提，為了加快速度，它並不是隨時都進行加鎖的，因此它的 get()，clear() 方法和迭代器都是屬於 "弱一致性" 的。所以，如果你的環境要求 "強一致性" 的話，就不能用 Concurrent<span class="searchword">HashMap</span>，但不過真正需要 "強一致性" 的情況可能非常少，對於大多應用情境， Concurrent<span class="searchword">HashMap</span> 是可以滿足的。如果對在甚麼樣的情況下，會造成一致性的問題，可以參考一下這篇文章最後面的補充 - <a class="external" href="http://room113.blogbus.com/logs/77679685.html">http://room113.blogbus.com/logs/77679685.html</a><img class="outlink" src="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/out.png" alt="">
+</li></ul><p>
+</p><p><br>
+因此，一般來說，<b>除非您對 ReentrantLock 新的特性有明確的使用需求，或者有明確的證據顯示使用 synchronized 語法已經成為效能的瓶頸，否則還是應當繼續使用 synchronized。</b>
+</p>
+<p>
+</p><h3 id="section-PG_HashMapNonThreadIssue-_E7_B5_90_E8_AB_96_E5_8F_8A_E5_BB_BA_E8_AD_B0">結論及建議<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-PG_HashMapNonThreadIssue-_E7_B5_90_E8_AB_96_E5_8F_8A_E5_BB_BA_E8_AD_B0">#</a></h3>
+<p>從上述的介紹中，我們已經知道，當我們要將 <span class="searchword">HashMap</span> 共用於多執行緒的環境下，就有可能發生 CPU 滿載的問題。因此，若遇到這樣的需求，我們必須以別種同步安全的方式來替代。根據比較了各種方案之後，我們<b>應該先利用區段式的 synchronized 來對我們的共用資源進行保護，若之後發現確定會有效能的影響時，再採行使用 ReentrantLock 的方式，或是直接使用 Concurrent<span class="searchword">HashMap</span> 來取代 <span class="searchword">HashMap</span>。</b>
+</p>
+<p>
+</p><p>
+</p><p>
+</p><p>
+</p><p>
+
+
+
+
+
+
+        
+  </p></div>
+
+
+  
+
+  
+  <div id="attach" class="hidetab">
+
+    
+
+
+
+
+
+
+
+
+
+
+<div id="addattachment">
+<h3>添加新附件</h3>
+
+
+<div class="formhelp">只有授權的使用者才能上傳新附件。</div>
+
+</div>
+
+
+
+<h3>附件清單</h3>
+
+  
+
+  
+
+  <div class="zebra-table"><div class="slimbox-img sortable">
+  <table class="wikitable">
+    <tbody><tr>
+      <th class="sort" title="按一下排序">種類</th>
+      <th class="sort" title="按一下排序">附件名稱</th>
+      <th class="sort" title="按一下排序">大小</th>
+      <th class="sort" title="按一下排序">版本</th>
+      <th class="sort" title="按一下排序">修改日期</th>
+      <th class="sort" title="按一下排序">作者</th>
+      
+      <th class="changenote sort" title="按一下排序">對變更的注釋</th>
+    </tr>
+
+    
+    
+    <tr class="">
+      <td><div id="attach-png" class="attachtype">png</div></td>
+      <td><a class="slimbox" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashMap_structure.png" rel="lightbox0 img" title="HashMap_structure.png">»</a><a class="attachment" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashMap_structure.png" accesskey="" title="HashMap_structure.png">HashMap_structure.png</a></td>
+      <td style="white-space:nowrap;text-align:right;">
+        28.0&nbsp;kB
+      </td>
+      <td style="text-align:center;">
+        <a href="http://tcxlsvr603:8080/JSPWiki/PageInfo.jsp?page=PG_HashMapNonThreadIssue/HashMap_structure.png" title="附件附件和版本歷史記錄">1</a>
+      </td>
+	  <td style="white-space:nowrap;" jspwiki:sortvalue="1291625462000">
+	  06-十二月-2010 16:51
+	  </td>
+      <td>芋頭 王</td>
+      
+      <td class="changenote">
+      
+      </td>
+    </tr>
+    
+    
+    <tr class="odd">
+      <td><div id="attach-jpg" class="attachtype">jpg</div></td>
+      <td><a class="slimbox" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashTableVSConcurrentHashMap.jpg" rel="lightbox0 img" title="HashTableVSConcurrentHashMap.j...">»</a><a class="attachment" href="./Project Develop Dept.：PG_HashMapNonThreadIssue_files/HashTableVSConcurrentHashMap.jpg" accesskey="" title="HashTableVSConcurrentHashMap.jpg">HashTableVSConcurrentHashMap.j...</a></td>
+      <td style="white-space:nowrap;text-align:right;">
+        19.3&nbsp;kB
+      </td>
+      <td style="text-align:center;">
+        <a href="http://tcxlsvr603:8080/JSPWiki/PageInfo.jsp?page=PG_HashMapNonThreadIssue/HashTableVSConcurrentHashMap.jpg" title="附件附件和版本歷史記錄">1</a>
+      </td>
+	  <td style="white-space:nowrap;" jspwiki:sortvalue="1291780018000">
+	  08-十二月-2010 11:46
+	  </td>
+      <td>芋頭 王</td>
+      
+      <td class="changenote">
+      
+      </td>
+    </tr>
+    
+
+  </tbody></table>
+  </div></div>
+
+
+
+  </div>
+
+  
+    
+  <div id="info" class="hidetab">
+
+  </div>
+
+    
+  
+
+<div style="clear:both;"></div>
+</div>
+
+      
+
+
+
+
+
+
+
+<div id="actionsBottom" class="pageactions"> 
+    
+
+    <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#top" class="action quick2top" title="至文章頂">«</a>
+
+    
+       本頁面（修訂版 21）最後更新時間為 <a href="http://tcxlsvr603:8080/JSPWiki/Diff.jsp?page=PG_HashMapNonThreadIssue&amp;r1=21&amp;r2=20">05-九月-2016 10:45</a>，更新者為 Mark
+    
+
+    
+
+   <a href="http://tcxlsvr603:8080/JSPWiki/rss.jsp?page=PG_HashMapNonThreadIssue&amp;mode=wiki" class="feed" title="RSS feed for page PG_HashMapNonThreadIssue">&nbsp;</a> 
+
+  
+
+   
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+<div id="favorites">
+
+  
+
+
+
+
+
+
+<div class="userbox">
+
+  
+    <span class="username anonymous">
+      您好（匿名訪客）
+    </span>
+  
+  
+  
+
+  
+  
+  
+    
+      <a href="http://tcxlsvr603:8080/JSPWiki/Login.jsp?redirect=PG_HashMapNonThreadIssue" class="action login" title="登入或註冊為新用戶">登入</a>
+    
+  
+  
+  
+  
+
+  
+  
+    <a href="http://tcxlsvr603:8080/JSPWiki/UserPreferences.jsp?redirect=PG_HashMapNonThreadIssue" class="action prefs" accesskey="p" title="管理偏好選項 [ p ]">個人設定(<span class="accesskey">P</span>)
+    </a>
+  
+  
+
+  <div class="clearbox"></div>
+
+</div>
+  
+  <div id="hiddenmorepopup">
+  
+  </div>
+  
+  
+
+  
+
+  
+
+  
+  <div class="leftmenu">
+    <ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main">首頁</a>  
+</li><li><b><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Wiki_rules">Wiki規範</a></b>
+</li><li><b><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_Cooperation">程設科合作管理會議</a></b>
+</li></ul><hr>
+<h4 id="section-Main-SA_E5_B0_88_E5_8D_80">SA 專區<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-Main-SA_E5_B0_88_E5_8D_80">#</a></h4>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SA_Team_News">News</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SA_study">2012課程大綱</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SA_2013">2013早會教育訓練</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SA_Scrum">Scrum經驗分享</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SA_Others">其他</a>
+</li></ul><br>
+<hr>
+<h4 id="section-Main-_E6_8A_95_E8_B3_87_E7_A8_8B_E5_BC_8F_E8_A8_AD_E8_A8_88_E7_A7_91">投資程式設計科<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-Main-_E6_8A_95_E8_B3_87_E7_A8_8B_E5_BC_8F_E8_A8_AD_E8_A8_88_E7_A7_91">#</a></h4>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=News">News</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Junior_zone">新人專區</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Develop_zone">程式設計</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Faq_zone">FAQ</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Tips_zone">Develop Tips</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Case_study_zone">Case Study</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Project_zone">專案開發</a>
+</li></ul><br>
+<hr>
+<br>
+<b>(原版目錄)</b>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=News">News</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_Developer">程式開發</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_Code">程式案例分享</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Business_doc">業務文件</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Work_list">工作規範與進度</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Meeting_record">科會資料</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Freshman">新人專區</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Form_apply">表單相關作業</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Favorite_link">常用連結</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Common_mechanism">底層共同機制介紹</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Others">其他</a>
+</li></ul><br>
+<hr>
+<h4 id="section-Main-_E5_A3_BD_E9_9A_AA_E7_A8_8B_E5_BC_8F_E8_A8_AD_E8_A8_88_E7_A7_91">壽險程式設計科<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-Main-_E5_A3_BD_E9_9A_AA_E7_A8_8B_E5_BC_8F_E8_A8_AD_E8_A8_88_E7_A7_91">#</a></h4>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=AP_Team_News">AP News</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=AP_PG_Developer">AP 程式開發</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=AP_PG_Case_Study">AP 程式案例分享</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=AP_work_list">工作規範與進度</a>
+</li></ul><br>
+<hr>
+<h4 id="section-Main-_E9_9B_BB_E5_AD_90_E5_95_86_E5_8B_99_E8_B3_87_E8_A8_8A_E7_A7_91">電子商務資訊科<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-Main-_E9_9B_BB_E5_AD_90_E5_95_86_E5_8B_99_E8_B3_87_E8_A8_8A_E7_A7_91">#</a></h4>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=EC_News">News</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=EC_Projects">專案工作</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_EC_Developer">程式開發</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Freshman_EC">新進人員</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Favorite_Link_EC">常用連結</a>
+</li></ul><br>
+<hr>
+<h4 id="section-Main-_E8_B3_87_E8_A8_8A_E6_AA_A2_E7_B4_A2">資訊檢索<a class="hashlink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#section-Main-_E8_B3_87_E8_A8_8A_E6_AA_A2_E7_B4_A2">#</a></h4>
+<ul><li><b><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=FindPage">Find pages</a></b>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=UnusedPages">Unused pages</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=UndefinedPages">Undefined pages</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PageIndex">Page Index</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=SystemInfo">SystemInfo</a>
+</li></ul><hr>
+<ul><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Wiki_page">Wiki page</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=About">About</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=RecentChanges">Recent Changes</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=WikiEtiquette">WikiEtiquette</a>
+</li><li><a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Sandbox">練習區</a>
+</li></ul><hr>
+<ul><li><a class="interwiki" href="http://tcxlsvr603:8080/JSPWiki/Edit.jsp?page=%20LeftMenu">Edit Menu</a>
+</li></ul>
+    
+  </div>
+  
+  <div class="leftmenufooter">
+    <hr>
+<p>
+    
+  </p></div>
+
+  
+
+  
+  
+  <div class="wikiversion">JSPWiki v2.8.3
+  <span class="rssfeed">
+    <a class="feed" href="http://10.95.42.51:8080/JSPWiki/rss.rdf">&nbsp;</a>
+  </span>
+  </div>  
+  
+</div>
+
+	<div class="clearbox"></div>
+  </div>
+
+  
+
+
+
+
+
+ 
+<div id="footer">
+
+  <div class="applicationlogo"> 
+    <a href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=Main" title="轉到主頁 Main ">主頁</a>
+  </div>
+
+  <div class="companylogo"></div>
+
+  <div class="copyright">版權所有 國泰人壽保險公司 <a class="wikipage" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=CopyrightNotice">Copyright(C)</a> 2010 Cathay Life. All rights reserved
+</div>
+
+  <div class="wikiversion">
+    JSPWiki v2.8.3
+  </div>
+
+  <div class="rssfeed">
+    <a class="feed" href="http://10.95.42.51:8080/JSPWiki/rss.rdf">&nbsp;</a>
+  </div>
+
+</div>
+
+</div>
+
+
+
+
+<div id="lbOverlay" style="visibility: hidden; zoom: 1; opacity: 0;"></div><div id="lbCenter" style="width: 250px; height: 250px; margin-left: -125px; display: none;"><a id="lbCloseLink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" title="關閉 [Esc]"></a><div id="lbImage"></div></div><div id="lbBottomContainer" style="display: none;"><div id="lbBottom"><div id="lbCaption"></div><div><a id="lbPrevLink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" style="display: none;">«上一個</a><span id="lbNumber"></span><a id="lbNextLink" href="http://tcxlsvr603:8080/JSPWiki/Wiki.jsp?page=PG_HashMapNonThreadIssue#" style="display: none;">下一個»</a></div><div style="clear: both;"></div></div></div></body></html>
