@@ -1,0 +1,20 @@
+var postData = 'username=E223877140&password=2s951821z&login-form-type=pwd';
+var options = {
+  method: 'post',
+  body: postData, // Javascript object
+  url: 'https://w3.cathaylife.com.tw/eai/ZPWeb/login',
+  headers: {
+    'cookie': 'IV_JCT=%2Feai; path=/'
+  }
+}
+
+request(options, function (err, res, body) {
+  if (err) {
+    console.log('Error :', err)
+    return
+  }
+  console.log(' res :',JSON.stringify(res.headers
+  ))
+  console.log(' Body :', body)
+
+});
